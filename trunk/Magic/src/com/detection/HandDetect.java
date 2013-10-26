@@ -1,9 +1,7 @@
 package com.detection;
 
 import org.opencv.core.*;
-import org.opencv.highgui.*;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.features2d.*;
 import org.opencv.objdetect.*;
 
 import java.util.ArrayList;
@@ -31,16 +29,20 @@ public class HandDetect {
 	    
 	    
 	    for (Rect rect : fistLocations.toArray()) {
-	        Core.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
+	    	foo.add(new Hand( centerOf(rect), false));
 	    }
 	    
 	    for( Rect rect : palmLocations.toArray()) {
-	    	Core.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y+rect.height), new Scalar(255, 0 ,0));
+	    	foo.add(new Hand(centerOf(rect), true));
 	    }
 	    
-		
 		return foo;
 		
 	}
+	
+	private static Point centerOf(Rect rect){
+		return new Point(rect.x + rect.width/2, rect.y+rect.height );
+	}
+	
 	
 }
