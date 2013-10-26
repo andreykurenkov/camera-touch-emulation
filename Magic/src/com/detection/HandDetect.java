@@ -20,7 +20,7 @@ public class HandDetect {
 	private static CascadeClassifier palmClassifier;
 	
 	public static void init(Context context ){
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
         try {
 	        InputStream is = context.getAssets().open("fist.xml");
 	        File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
@@ -92,22 +92,47 @@ public class HandDetect {
 	    src.convertTo(src, CvType.CV_8U);
 	    MatOfRect fistLocations = new MatOfRect();
 	    MatOfRect palmLocations = new MatOfRect();
-	    int mAbsoluteFaceSize = 100;
-	   // fistClassifier.detectMultiScale(src, fistLocations, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-              //  new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-	    palmClassifier.detectMultiScale(src, fistLocations, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-	                new Size(mAbsoluteFaceSize, mAbsoluteFaceSize),new Size(mAbsoluteFaceSize/2, mAbsoluteFaceSize/2));
+	    
+	    int width = src.width();
+	    int height = src.height();
+	    
+	    if(width>height){
+	    	double ratioWidthToMax = 0.28;
+	    	double ratioWidthMaxToMin = 0.7;
+	    	double ratioWidthToHeight = 1.25;
+		    double scale = 1.04;
+		    int neightbors = 3;
+		    
+		    double maxWidth = width * ratioWidthToMax;
+		    double minWidth = maxWidth * ratioWidthMaxToMin;
+		    double maxHeight = maxWidth * ratioWidthToHeight;
+		    double minHeight = minWidth * ratioWidthToHeight;
+		    
+		    palmClassifier.detectMultiScale(src, palmLocations, scale, neightbors, 2,
+	                new Size(minWidth,minHeight),new Size(maxWidth, maxHeight));
+		    
+		    ratioWidthToMax = 0.25;
+	    	ratioWidthMaxToMin = 0.75;
+	    	ratioWidthToHeight = 1;
+		    scale = 1.1;
+		    neightbors = 2;
+		    
+		    maxWidth = width * ratioWidthToMax;
+		    minWidth = maxWidth * ratioWidthMaxToMin;
+		    maxHeight = maxWidth * ratioWidthToHeight;
+		    minHeight = minWidth * ratioWidthToHeight;
+		    
+		    fistClassifier.detectMultiScale(src, fistLocations, scale, neightbors, 2,
+	                new Size(minWidth,minHeight),new Size(maxWidth, maxHeight));  
+	    }
 	    
 	    for (Rect rect : fistLocations.toArray()) {
-	    	foo.add(new Hand( rect, false));
-	        Core.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-	        
+	    	foo.add(new Hand( rect, false));	        
 	    }
 	    
 	    for( Rect rect : palmLocations.toArray()) {
 	    	foo.add(new Hand(rect, true));
-	    	Core.rectangle(src, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y+rect.height), new Scalar(255, 0 ,0));
-	        
+	       
 	    }
 	    
 		return foo;

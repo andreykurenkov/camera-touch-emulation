@@ -130,7 +130,7 @@ public class TestActivity extends Activity implements OnTouchListener, CvCameraV
         for(Hand hand:hands){
         	Rect rect = hand.getRect();
         	Log.d("hand", rect.toString());
-        	Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
+        	Core.rectangle(mRgba, rect.tl(), rect.br(), hand.isOpen()?new Scalar(255, 255, 0):new Scalar(0, 255, 255), 2, 8, 0 );
         }
 
         return mRgba;
