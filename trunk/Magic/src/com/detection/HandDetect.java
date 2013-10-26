@@ -92,9 +92,11 @@ public class HandDetect {
 	    src.convertTo(src, CvType.CV_8U);
 	    MatOfRect fistLocations = new MatOfRect();
 	    MatOfRect palmLocations = new MatOfRect();
-
-	    fistClassifier.detectMultiScale(src, fistLocations);
-	    palmClassifier.detectMultiScale(src, palmLocations);
+	    int mAbsoluteFaceSize = 100;
+	   // fistClassifier.detectMultiScale(src, fistLocations, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+              //  new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+	    palmClassifier.detectMultiScale(src, fistLocations, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+	                new Size(mAbsoluteFaceSize, mAbsoluteFaceSize),new Size(mAbsoluteFaceSize/2, mAbsoluteFaceSize/2));
 	    
 	    for (Rect rect : fistLocations.toArray()) {
 	    	foo.add(new Hand( rect, false));

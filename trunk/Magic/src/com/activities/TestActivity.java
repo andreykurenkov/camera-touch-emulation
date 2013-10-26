@@ -1,6 +1,9 @@
 package com.activities;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -16,6 +19,7 @@ import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 
 import com.detection.Hand;
 import com.detection.HandDetect;
@@ -23,6 +27,7 @@ import com.example.magic.R;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -40,6 +45,11 @@ public class TestActivity extends Activity implements OnTouchListener, CvCameraV
     private Size                 SPECTRUM_SIZE;
     private CameraBridgeViewBase mOpenCvCameraView;
 
+    
+
+    private File                   mCascadeFile;
+    private CascadeClassifier      mJavaDetector;
+    
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -47,6 +57,10 @@ public class TestActivity extends Activity implements OnTouchListener, CvCameraV
                 case LoaderCallbackInterface.SUCCESS:
                 {
                     Log.i(TAG, "OpenCV loaded successfully");
+                    System.loadLibrary("magic");
+
+                	HandDetect.init(TestActivity.this);
+                  
                     mOpenCvCameraView.enableView();
                     mOpenCvCameraView.setOnTouchListener(TestActivity.this);
                 } break;
@@ -62,7 +76,6 @@ public class TestActivity extends Activity implements OnTouchListener, CvCameraV
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	HandDetect.init(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 

@@ -58,7 +58,8 @@ public class IntroActivity extends Activity implements OnTouchListener, CvCamera
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
-                {
+                { 
+                	System.loadLibrary("magic");
                     Log.i(TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
                     mOpenCvCameraView.setOnTouchListener(IntroActivity.this);
