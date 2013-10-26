@@ -82,10 +82,9 @@ public class HandDetect {
 		return findHands( src.rgba().clone() );
 	}
 	
-	private static List<Hand> findHands(Mat src){
+	public static List<Hand> findHands(Mat src){
 		ArrayList<Hand> foo = new ArrayList<Hand>();
 
-		Log.d("Classifier Empty: " , fistClassifier.empty()+"");
 		Imgproc.GaussianBlur(src,  src, new Size(5,5), 1);
 		Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2GRAY);
 
@@ -97,11 +96,11 @@ public class HandDetect {
 	    int height = src.height();
 	    
 	    if(width>height){
-	    	double ratioWidthToMax = 0.28;
-	    	double ratioWidthMaxToMin = 0.7;
+	    	double ratioWidthToMax = 0.29;
+	    	double ratioWidthMaxToMin = 0.64;
 	    	double ratioWidthToHeight = 1.25;
-		    double scale = 1.04;
-		    int neightbors = 3;
+		    double scale = 1.02;
+		    int neightbors = 2;
 		    
 		    double maxWidth = width * ratioWidthToMax;
 		    double minWidth = maxWidth * ratioWidthMaxToMin;
@@ -111,7 +110,7 @@ public class HandDetect {
 		    palmClassifier.detectMultiScale(src, palmLocations, scale, neightbors, 2,
 	                new Size(minWidth,minHeight),new Size(maxWidth, maxHeight));
 		    
-		    ratioWidthToMax = 0.25;
+		    ratioWidthToMax = 0.2;
 	    	ratioWidthMaxToMin = 0.75;
 	    	ratioWidthToHeight = 1;
 		    scale = 1.1;
