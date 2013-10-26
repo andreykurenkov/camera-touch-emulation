@@ -27,7 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class CombinedTestActivity extends Activity  {
-
+	private ImageView image;
 	private DrawPointerView view;
 	private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
 		@Override
@@ -36,6 +36,7 @@ public class CombinedTestActivity extends Activity  {
 			case LoaderCallbackInterface.SUCCESS:
 			{ 
 				System.loadLibrary("magic");
+				loaded = true;
 				HandDetect.init(CombinedTestActivity.this);
 				Log.i("IntroActivity", "OpenCV loaded successfully");
 				//mOpenCvCameraView.enableView();
@@ -61,9 +62,11 @@ private CamPreview preview;
 			if(loaded){
 				super.onPreviewFrame(data, camera);
 				view.points.clear();
-				for(Hand hand:HandDetect.findHands(mRgba)){
-					view.points.add(hand.getCenter());
-				}
+				view.invalidate();
+				
+				image.setImageBitmap(bit);
+				
+				
 			}
 		}
 
@@ -78,6 +81,7 @@ private CamPreview preview;
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		setContentView(R.layout.combined_test_view);
+		image = (ImageView) this.findViewById(R.id.demo_view);
 		// Setup the camera and the preview object
 		Camera mCamera = Camera.open(0);
 		preview = new CamPreview(this,mCamera);
@@ -89,7 +93,7 @@ private CamPreview preview;
 		frame.addView(preview);
 
 		// Attach a callback for preview
-		CamCallback camCallback = preview.new CamCallback();
+		CamUpdate camCallback = new CamUpdate();
 		mCamera.setPreviewCallback(camCallback);
 		view = new DrawPointerView(this);
 		addContentView(view,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
