@@ -20,7 +20,7 @@ public class HandDetect {
 	private static CascadeClassifier palmClassifier;
 	
 	public static void init(Context context ){
-
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         try {
 	        InputStream is = context.getAssets().open("fist.xml");
 	        File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
