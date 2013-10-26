@@ -101,12 +101,10 @@ public class HandDetect {
 	    int height = src.height();
 	    
 	    if(width>height){
-	    	double ratioWidthToMax = 0.35;
-	    	double ratioWidthMaxToMin = 0.7;
-	    	double ratioWidthToHeight = 1.25;
+	    	double ratioWidthToMax = 0.25;
+	    	double ratioWidthMaxToMin = 0.64;
+	    	double ratioWidthToHeight = 1.5;
 		    double scale = 1.015;
-		    if(fast)
-	    		scale=1.5;
 		    int neightbors = 1;
 		    
 		    double maxWidth = width * ratioWidthToMax;
@@ -120,9 +118,8 @@ public class HandDetect {
 		    ratioWidthToMax = 0.2;
 	    	ratioWidthMaxToMin = 0.75;
 	    	ratioWidthToHeight = 1;
+	    	
 		    scale = 1.1;
-		    if(fast)
-	    		scale=1.5;
 		    neightbors = 2;
 		    
 		    maxWidth = width * ratioWidthToMax;
