@@ -30,26 +30,41 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name="com.activities.IntroActivity"
+            android:name="com.activities.CombinedTestActivity"
             android:label="@string/title_activity_intro" >
-        </activity>
-        
-        <activity
-            android:name="com.activities.FdActivity"
-            android:label="@string/title_activity_intro" >
-              
-           
-        </activity>
-        <activity
-            android:name="com.activities.TestActivity"
-            android:label="TEST TEST TEST"
-            android:screenOrientation="landscape" >
-          <intent-filter>
+            
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+                     
         </activity>
+        
+        <activity
+            android:name="com.example.FdActivity"
+            android:label="@string/title_activity_intro" >
+              
+           
+        </activity>
+        
+        <activity
+            android:name="com.activities.CameraTestActivity"
+            android:label="TEST TEST TEST"
+            android:screenOrientation="landscape" >
+             
+
+        </activity>
+        
+        <activity
+            android:name="com.activities.DetectTestActivity"
+            android:label="TEST TEST TEST"
+            android:screenOrientation="landscape" >
+
+        </activity>
+    
     </application>
+    
+        
 
 </manifest>
