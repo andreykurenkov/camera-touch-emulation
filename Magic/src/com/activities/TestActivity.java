@@ -1,10 +1,13 @@
 package com.activities;
 
 
+import java.util.List;
+
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -14,6 +17,8 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.imgproc.Imgproc;
 
+import com.detection.Hand;
+import com.detection.HandDetect;
 import com.example.magic.R;
 
 
@@ -108,13 +113,15 @@ public class TestActivity extends Activity implements OnTouchListener, CvCameraV
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        mRgba = inputFrame.rgba();
-
-        int cols = mRgba.cols();
-        int rows = mRgba.rows();
-
-        Rect centerRect = new Rect(cols/2-35,rows/2-45,70,90);
-
+    	mRgba = inputFrame.rgba();
+    	
+        List<Hand> hands = HandDetect.findHands(inputFrame);
+        Log.d("hand count", ""+hands.size());
+        for(Hand hand:hands){
+        	Rect rect = hand.getRect();
+        	Log.d("hand", rect.toString());
+        	Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
+        }
 
         return mRgba;
     }
