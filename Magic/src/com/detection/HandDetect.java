@@ -3,6 +3,7 @@ package com.detection;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.*;
+import org.opencv.android.CameraBridgeViewBase.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +13,14 @@ public class HandDetect {
 	private static CascadeClassifier fistClassifier = new CascadeClassifier("fist.xml");
 	private static CascadeClassifier palmClassifier = new CascadeClassifier("palm.xml");
 	
-	public static List<Hand> findHands(Mat src){
+	public static List<Hand> findHands(CvCameraViewFrame src){
+		return findHands( src.rgba() );
+	}
+	
+	private static List<Hand> findHands(Mat src){
 		
 		ArrayList<Hand> foo = new ArrayList<Hand>();
 
-		
 		Imgproc.GaussianBlur(src,  src, new Size(5,5), 1);
 	    Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2GRAY);
 	    
@@ -26,7 +30,6 @@ public class HandDetect {
 	    
 	    fistClassifier.detectMultiScale(src, fistLocations);
 	    palmClassifier.detectMultiScale(src, palmLocations);
-	    
 	    
 	    for (Rect rect : fistLocations.toArray()) {
 	    	foo.add(new Hand( centerOf(rect), false));
