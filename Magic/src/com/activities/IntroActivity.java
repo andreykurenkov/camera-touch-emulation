@@ -41,6 +41,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class IntroActivity extends Activity implements OnTouchListener, CvCameraViewListener2 {
@@ -79,11 +80,15 @@ public class IntroActivity extends Activity implements OnTouchListener, CvCamera
 
         setContentView(R.layout.activity_intro);
         
+        ViewGroup layout = (RelativeLayout)this.findViewById(R.id.layout);
+        
         LayoutInflater inflater = LayoutInflater.from(this);
         ViewGroup group = new LinearLayout(this);
         inflater.inflate(R.layout.full_screen_view, group);
         
         mOpenCvCameraView = (CameraBridgeViewBase) ((ViewGroup)group.getChildAt(0)).getChildAt(0);
+        layout.addView(mOpenCvCameraView);
+        
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
@@ -125,15 +130,10 @@ public class IntroActivity extends Activity implements OnTouchListener, CvCamera
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+    	Log.d("exciting!","excitign!");
     	mRgba = inputFrame.rgba();
     	
-        List<Hand> hands = HandDetect.findHands(inputFrame);
-        Log.d("hand count", ""+hands.size());
-        for(Hand hand:hands){
-        	Rect rect = hand.getRect();
-        	Log.d("hand", rect.toString());
-        	Core.rectangle(mRgba, rect.tl(), rect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
-        }
+       
 
         return mRgba;
     }
