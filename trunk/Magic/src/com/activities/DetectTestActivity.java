@@ -1,9 +1,6 @@
 package com.activities;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.List;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -19,18 +16,14 @@ import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
-
 import com.camera.CamPreview;
-import com.camera.CamPreview.CamCallback;
 import com.detection.Hand;
 import com.detection.HandDetect;
 import com.example.magic.R;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.hardware.Camera;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -38,7 +31,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
-import android.widget.FrameLayout;
 
 public class DetectTestActivity extends Activity implements OnTouchListener, CvCameraViewListener2 {
 	private static final String  TAG              = "Calibration Activity";
@@ -118,6 +110,9 @@ private CamPreview camPreview;
 	public boolean onTouch(View v, MotionEvent event) {
 		int cols = mRgba.cols();
 		int rows = mRgba.rows();
+
+    	Intent intent = new Intent(this, CombinedTestActivity.class);
+        startActivity(intent);    
 
 		return false; // don't need subsequent touch events
 	}

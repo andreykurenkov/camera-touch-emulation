@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.List;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import com.detection.Hand;
@@ -70,6 +73,13 @@ public class CamPreview extends TextureView implements SurfaceTextureListener {
 			
 			mYuv.put(0, 0, data);    
 			Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+			List<Hand> hands = HandDetect.findHands(mRgba,false);
+			Log.d("hand count", ""+hands.size());
+			for(Hand hand:hands){
+				Rect rect = hand.getRect();
+				Log.d("hand", rect.toString());
+				Core.rectangle(mRgba, rect.tl(), rect.br(), hand.isOpen()?new Scalar(255, 255, 0):new Scalar(0, 255, 255), 2, 8, 0 );
+			}
 			Utils.matToBitmap(mRgba, bit);
 
 		}

@@ -79,10 +79,15 @@ public class HandDetect {
 	}
 	
 	public static List<Hand> findHands(CvCameraViewFrame src){
-		return findHands( src.rgba().clone() );
+		return findHands( src.rgba());
 	}
 	
 	public static List<Hand> findHands(Mat src){
+		return findHands(src,false);
+	}
+	
+	public static List<Hand> findHands(Mat src, boolean fast){
+		src = src.clone();
 		ArrayList<Hand> foo = new ArrayList<Hand>();
 
 		Imgproc.GaussianBlur(src,  src, new Size(5,5), 1);
@@ -96,11 +101,13 @@ public class HandDetect {
 	    int height = src.height();
 	    
 	    if(width>height){
-	    	double ratioWidthToMax = 0.29;
-	    	double ratioWidthMaxToMin = 0.64;
+	    	double ratioWidthToMax = 0.35;
+	    	double ratioWidthMaxToMin = 0.7;
 	    	double ratioWidthToHeight = 1.25;
-		    double scale = 1.02;
-		    int neightbors = 2;
+		    double scale = 1.015;
+		    if(fast)
+	    		scale=1.5;
+		    int neightbors = 1;
 		    
 		    double maxWidth = width * ratioWidthToMax;
 		    double minWidth = maxWidth * ratioWidthMaxToMin;
@@ -114,6 +121,8 @@ public class HandDetect {
 	    	ratioWidthMaxToMin = 0.75;
 	    	ratioWidthToHeight = 1;
 		    scale = 1.1;
+		    if(fast)
+	    		scale=1.5;
 		    neightbors = 2;
 		    
 		    maxWidth = width * ratioWidthToMax;
