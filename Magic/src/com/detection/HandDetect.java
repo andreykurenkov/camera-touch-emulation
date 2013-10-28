@@ -5,10 +5,8 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.*;
 import org.opencv.android.CameraBridgeViewBase.*;
 
-import android.R;
 import android.util.Log;
 import android.content.*;
-import android.content.res.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,39 +19,17 @@ public class HandDetect {
 	
 	public static void init(Context context ){
 
+		loadClassifier(context, "palm.xml");
+		loadClassifier(context, "fist.xml");
+		
+	}
+	
+	
+	public static void loadClassifier(Context context, String fileName){
         try {
-	        InputStream is = context.getAssets().open("fist.xml");
+	        InputStream is = context.getAssets().open(fileName);
 	        File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
-	        File mCascadeFile = new File(cascadeDir, "fist.xml");
-	        FileOutputStream os = new FileOutputStream(mCascadeFile);
-	
-	        byte[] buffer = new byte[4096];
-	        int bytesRead;
-	        while ((bytesRead = is.read(buffer)) != -1) {
-	            os.write(buffer, 0, bytesRead);
-	        }
-	        is.close();
-	        os.close();
-	
-	        fistClassifier = new CascadeClassifier(mCascadeFile.getAbsolutePath());
-	        if (fistClassifier.empty()) {
-	            Log.d( "Failed to load cascade classifier", "ERROR");
-	            fistClassifier = null;
-	        } else
-	            Log.d("Loaded cascade classifier from: " , mCascadeFile.getAbsolutePath());
-	
-	
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            Log.d( "Failed to load cascade. Exception thrown: ", e.getMessage());
-	       }
-        
-        
-
-        try {
-	        InputStream is = context.getAssets().open("palm.xml");
-	        File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
-	        File mCascadeFile = new File(cascadeDir, "palm.xml");
+	        File mCascadeFile = new File(cascadeDir, fileName);
 	        FileOutputStream os = new FileOutputStream(mCascadeFile);
 	
 	        byte[] buffer = new byte[4096];
@@ -74,8 +50,7 @@ public class HandDetect {
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	            Log.d( "Failed to load cascade. Exception thrown: ", e.getMessage());
-	       }
-		
+	       }		
 	}
 	
 	public static List<Hand> findHands(CvCameraViewFrame src){
@@ -143,8 +118,6 @@ public class HandDetect {
 		return foo;
 		
 	}
-	
-	
 	
 	public static Point centerOf(Rect rect){
 		return new Point(rect.x + rect.width/2, rect.y+rect.height );
